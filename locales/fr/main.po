@@ -1,0 +1,125 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: brol <contact@brol.info>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+
+msgid "Countdown and stopwatch"
+msgstr "Compte à rebours ou chronomètre"
+
+msgid "A countdown to a future date or stopwatch to a past date"
+msgstr "Un compte à rebours vers une date à venir ou un chronomètre vers une date passée"
+
+#: _widget.php:38
+msgid "Countdown"
+msgstr "Chronomètre"
+
+#: _widget.php:41
+msgid "Text displayed if the date is in the future:"
+msgstr "Texte affiché si la date est dans le futur&nbsp;:"
+
+#: _widget.php:41
+msgid "In"
+msgstr "Dans"
+
+#: _widget.php:44
+msgid "Text displayed if the date is in the past:"
+msgstr "Texte affiché si la date est passée&nbsp;:"
+
+#: _widget.php:44
+msgid "For"
+msgstr "Depuis"
+
+#: _widget.php:77
+msgid "all"
+msgstr "tous"
+
+#: _widget.php:162
+msgid "year"
+msgstr "an"
+
+#: _widget.php:164
+msgid "month"
+msgstr "mois"
+
+#: _widget.php:166
+msgid "day"
+msgstr "jour"
+
+#: _widget.php:168
+msgid "hour"
+msgstr "heure"
+
+#: _widget.php:170
+msgid "minute"
+msgstr "minute"
+
+#: _widget.php:172
+msgid "second"
+msgstr "seconde"
+
+#: _widget.php:94
+msgid "Number of values to be displayed:"
+msgstr "Nombre de valeurs à afficher&nbsp;:"
+
+#: _widget.php:98
+msgid "Show zeros before hours, minutes and seconds"
+msgstr "Afficher des zéros devant les heures, les minutes et les secondes"
+
+#: _widget.php:101
+msgid "Enable dynamic display"
+msgstr "Activer l'affichage dynamique"
+
+#: _widget.php:104
+msgid "Dynamic display format (see <a href="%1$s" %2$s>jQuery Countdown Reference</a>):"
+msgstr "Format de l'affichage dynamique (voir <a href=\"%1$s\" %2$s>jQuery Countdown Reference</a>)&nbsp;:"
+
+#: _widget.php:111
+msgid "Dynamic display layout if the date is in the future (see <a href="%1$s" %2$s>jQuery Countdown Reference</a>):"
+msgstr "Mise en page de l'affichage dynamique si la date est dans le futur (voir <a href=\"%1$s\" %2$s>jQuery Countdown Reference</a>)&nbsp;:"
+
+#: _widget.php:115
+msgid "In {y<}{yn} {yl}, {y>} {o<}{on} {ol}, {o>} {w<}{wn} {wl}, {w>} {d<}{dn} {dl}, {d>} {hn} {hl}, {mn} {ml} and {sn} {sl}"
+msgstr "Dans {y<}{yn} {yl}, {y>}{o<}{on} {ol}, {o>}{d<}{dn} {dl}, {d>}{hn} {hl}, {mn} {ml} et {sn} {sl}"
+
+#: _widget.php:119
+msgid "Dynamic display layout if the date is in the past (see <a href="%1$s" %2$s>jQuery Countdown Reference</a>):"
+msgstr "Mise en page de l'affichage dynamique si la date est passée (voir <a href=\"%1$s\" %2$s>jQuery Countdown Reference</a>)&nbsp;:"
+
+#: _widget.php:123
+msgid "For {y<}{yn} {yl}, {y>} {o<}{on} {ol}, {o>} {w<}{wn} {wl}, {w>} {d<}{dn} {dl}, {d>} {hn} {hl}, {mn} {ml} and {sn} {sl}"
+msgstr "Depuis {y<}{yn} {yl}, {y>} {o<}{on} {ol}, {o>} {w<}{wn} {wl}, {w>} {d<}{dn} {dl}, {d>} {hn} {hl}, {mn} {ml} et {sn} {sl}"
+
+#: _widget.php:162
+msgid "years"
+msgstr "ans"
+
+#: _widget.php:164
+msgid "months"
+msgstr "mois"
+
+#: _widget.php:166
+msgid "days"
+msgstr "jours"
+
+#: _widget.php:168
+msgid "hours"
+msgstr "heures"
+
+#: _widget.php:170
+msgid "minutes"
+msgstr "minutes"
+
+#: _widget.php:172
+msgid "seconds"
+msgstr "secondes"
+
+#: _widget.php:199
+msgid "and"
+msgstr "et"
