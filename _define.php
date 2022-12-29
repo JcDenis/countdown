@@ -22,16 +22,17 @@
 if (!defined('DC_RC_PATH')) {return;}
 
 $this->registerModule(
-	/* Name */					"CountDown",
-	/* Description*/		"Countdown and stopwatch",
-	/* Author */				"Moe (http://gniark.net/), Pierre Van Glabeke",
-	/* Version */				'1.6',
-	/* Properties */
-	array(
-		'permissions' => 'admin',
-		'type' => 'plugin',
-		'dc_min' => '2.24',
-		'support' => 'http://lab.dotclear.org/wiki/plugin/countdown',
-		'details' => 'http://plugins.dotaddict.org/dc2/details/countdown'
-		)
+    'CountDown',
+    'Countdown and stopwatch',
+    'Moe (http://gniark.net/), Pierre Van Glabeke',
+    '2.0.0',
+    [
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_ADMIN,
+        ]),
+        'type'      => 'plugin',
+        'support'   => 'https://forum.dotclear.org/viewforum.php?id=16',
+		'details'	=> 'http://plugins.dotaddict.org/dc2/details/countdown'
+    ]
 );

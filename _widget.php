@@ -223,12 +223,12 @@ class CountDownBehaviors
 		else
 		{
 			# dynamic display with Countdown for jQuery
-			if (!is_numeric($GLOBALS['_ctx']->countdown))
+			if (!is_numeric(dcCore::app()->ctx->countdown))
 			{
-				$GLOBALS['_ctx']->countdown = 0;
+				dcCore::app()->ctx->countdown = 0;
 			}
-			$id = $GLOBALS['_ctx']->countdown;
-			$GLOBALS['_ctx']->countdown += 1;
+			$id = dcCore::app()->ctx->countdown;
+			dcCore::app()->ctx->countdown += 1;
 			
 			$script = '';
 			
