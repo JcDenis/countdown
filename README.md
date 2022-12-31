@@ -1,7 +1,52 @@
-# Countdown
+# README
 
-Le plugin propose un widget qui affiche un compte à rebours vers une date à venir ou un chronomètre vers une date passée.
+[![Release](https://img.shields.io/github/v/release/JcDenis/countdown)](https://github.com/JcDenis/countdown/releases)
+[![Date](https://img.shields.io/github/release-date/JcDenis/countdown)](https://github.com/JcDenis/countdown/releases)
+[![Issues](https://img.shields.io/github/issues/JcDenis/countdown)](https://github.com/JcDenis/countdown/issues)
+[![Dotclear](https://img.shields.io/badge/dotclear-v2.24-blue.svg)](https://fr.dotclear.org/download)
+[![Dotaddict](https://img.shields.io/badge/dotaddict-official-green.svg)](https://plugins.dotaddict.org/dc2/details/countdown)
+[![License](https://img.shields.io/github/license/JcDenis/countdown)](https://github.com/JcDenis/countdown/blob/master/LICENSE)
 
-Documentation
+## WHAT IS COUNTDOWN ?
 
-L'affichage dynamique utilise le plugin jQuery Countdown (http://keith-wood.name/countdown.html) qui propose une syntaxe riche pour le formatage (http://keith-wood.name/countdownRef.html#format) et l'affichage (http://keith-wood.name/countdownRef.html#layout).
+_countdown_ is a plugin for the open-source 
+web publishing software called Dotclear.
+
+It adds widget showing a countdown since/from a predefined date.
+
+## REQUIREMENTS
+
+ _countdown_ requires: 
+
+  * permissions to manage widgets
+  * Dotclear 2.24
+  * jQuery libs
+
+## USAGE
+
+First install _countdown_, manualy from a zip package or from 
+Dotaddict repository. (See Dotclear's documentation to know how do this)
+
+Add and configure "Countdown" from widgets manager.
+
+## LINKS
+
+ * License : [GNU GPL v2](https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)
+ * Source & contribution : [GitHub Page](https://github.com/JcDenis/countdown)
+ * Packages & details : [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/countdown)
+ * Discuss & help : [Dotclear forum](https://forum.dotclear.org/viewforum.php?id=16)
+
+## CONTRIBUTORS
+
+ * [Moe](http://gniark.net/) (author)
+ * Pierre Van Glabeke
+ * Jean-Christian Denis
+
+ You are welcome to contribute to this code.
+
+ ## JQUERY PLUGIN
+
+Dynamic display uses plugin jQuery Countdown; See:
+ * [Plugin](http://keith-wood.name/countdown.html)
+ * [Formats](http://keith-wood.name/countdownRef.html#format)
+ * [Display](http://keith-wood.name/countdownRef.html#layout)
