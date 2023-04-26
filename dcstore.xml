@@ -2,11 +2,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="countdown">
     <name>CountDown</name>
-    <version>2.1</version>
+    <version>2.2</version>
     <author>Moe (http://gniark.net/) and contributors</author>
     <desc>Countdown and stopwatch</desc>
-    <file>https://github.com/JcDenis/countdown/releases/download/v2.1/plugin-countdown.zip</file>
-    <da:dcmin>2.24</da:dcmin>
+    <file>https://github.com/JcDenis/countdown/releases/download/v2.2/plugin-countdown.zip</file>
+    <da:dcmin>2.22</da:dcmin>
     <da:details>https://plugins.dotaddict.org/dc2/details/countdown</da:details>
     <da:support>https://forum.dotclear.org/viewforum.php?id=16</da:support>
   </module>

@@ -1,3 +1,9 @@
+2.2 - 2023.04.26
+* require dotclear 2.26
+* use namespace
+* use dotclear Date Helper
+* fix nullsafe warnings
+
 2.1 - 2022.12.31
 * update to dotclear 2.24
 * update to jquery plugin 2.1.0 (2016)
