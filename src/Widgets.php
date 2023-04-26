@@ -10,19 +10,29 @@
  * @copyright Jean-Christian Denis
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return null;
-}
+declare(strict_types=1);
 
-dcCore::app()->addBehavior(
-    'initWidgets',
-    ['CountDownBehaviors','initWidgets']
-);
+namespace Dotclear\Plugin\countdown;
 
-class CountDownBehaviors
+use dcCore;
+use dcUtils;
+use Dotclear\Helper\Date;
+use Dotclear\Helper\Html\Html;
+use Dotclear\Plugin\widgets\WidgetsStack;
+use Dotclear\Plugin\widgets\WidgetsElement;
+
+class Widgets
 {
-    public static function initWidgets($w)
+    public static function id(): string
     {
+        return basename(dirname(__DIR__));
+    }
+    public static function initWidgets(WidgetsStack $w): void
+    {
+        if (is_null(dcCore::app()->blog)) {
+            return;
+        }
+
         $tz = dcCore::app()->blog->settings->get('system')->get('blog_timezone');
 
         $array_year   = $array_month = $array_day = $array_hour = [];
@@ -31,19 +41,19 @@ class CountDownBehaviors
             $array_year[$i] = $i;
         }
         for ($i = 1;$i <= 12;$i++) {
-            $i                                                                                              = str_repeat('0', (2 - strlen($i))) . $i;
-            $array_month[ucfirst(__(strftime('%B', mktime(0, 0, 0, (int) $i, 1, 1970)))) . ' (' . $i . ')'] = $i;
+            $i                                                                                                    = str_repeat('0', (2 - strlen((string) $i))) . $i;
+            $array_month[ucfirst(__(strftime('%B', (int) mktime(0, 0, 0, (int) $i, 1, 1970)))) . ' (' . $i . ')'] = $i;
         }
         for ($i = 1;$i <= 31;$i++) {
-            $i             = str_repeat('0', (2 - strlen($i))) . $i;
+            $i             = str_repeat('0', (2 - strlen((string) $i))) . $i;
             $array_day[$i] = $i;
         }
         for ($i = 0;$i <= 23;$i++) {
-            $i              = str_repeat('0', (2 - strlen($i))) . $i;
+            $i              = str_repeat('0', (2 - strlen((string) $i))) . $i;
             $array_hour[$i] = $i;
         }
         for ($i = 0;$i <= 60;$i++) {
-            $i                = str_repeat('0', (2 - strlen($i))) . $i;
+            $i                = str_repeat('0', (2 - strlen((string) $i))) . $i;
             $array_minute[$i] = $i;
         }
         for ($i = 1;$i <= 5;$i++) {
@@ -54,7 +64,7 @@ class CountDownBehaviors
         $w->create(
             'CountDown',
             __('Countdown'),
-            ['CountDownBehaviors', 'Show'],
+            [self::class, 'parseWidget'],
             null,
             __('A countdown to a future date or stopwatch to a past date')
         )
@@ -72,12 +82,12 @@ class CountDownBehaviors
             'text'
         )
 
-        ->setting('year', ucfirst(__('year')) . ':', dt::str('%Y', null, $tz), 'combo', $array_year)
-        ->setting('month', ucfirst(__('month')) . ':', dt::str('%m', null, $tz), 'combo', $array_month)
-        ->setting('day', ucfirst(__('day')) . ':', dt::str('%d', null, $tz), 'combo', $array_day)
-        ->setting('hour', ucfirst(__('hour')) . ':', dt::str('%H', null, $tz), 'combo', $array_hour)
-        ->setting('minute', ucfirst(__('minute')) . ':', dt::str('%M', null, $tz), 'combo', $array_minute)
-        ->setting('second', ucfirst(__('second')) . ':', dt::str('%S', null, $tz), 'combo', $array_minute)
+        ->setting('year', ucfirst(__('year')) . ':', Date::str('%Y', null, $tz), 'combo', $array_year)
+        ->setting('month', ucfirst(__('month')) . ':', Date::str('%m', null, $tz), 'combo', $array_month)
+        ->setting('day', ucfirst(__('day')) . ':', Date::str('%d', null, $tz), 'combo', $array_day)
+        ->setting('hour', ucfirst(__('hour')) . ':', Date::str('%H', null, $tz), 'combo', $array_hour)
+        ->setting('minute', ucfirst(__('minute')) . ':', Date::str('%M', null, $tz), 'combo', $array_minute)
+        ->setting('second', ucfirst(__('second')) . ':', Date::str('%S', null, $tz), 'combo', $array_minute)
 
         ->setting(
             'number_of_times',
@@ -138,30 +148,19 @@ class CountDownBehaviors
         ->addOffline();
     }
 
-    # escape quotes but not XHTML tags
-    # inspired by html::escapeJS()
-    public static function escapeQuotes($str)
+    public static function parseWidget(WidgetsElement $w): string
     {
-        $str = str_replace("'", "\'", $str);
-        $str = str_replace('"', '\"', $str);
-
-        return $str;
-    }
-
-    public static function Show($w)
-    {
-        if ($w->offline) {
-            return null;
-        }
-
-        if (!$w->checkHomeOnly(dcCore::app()->url->type)) {
-            return null;
+        if (is_null(dcCore::app()->blog)
+            || $w->__get('offline')
+            || !$w->checkHomeOnly(dcCore::app()->url->type)
+        ) {
+            return '';
         }
 
         # get local time
-        $local_time = dt::addTimeZone(dcCore::app()->blog->settings->get('system')->get('blog_timezone'));
+        $local_time = Date::addTimeZone(dcCore::app()->blog->settings->get('system')->get('blog_timezone'));
 
-        $ts = mktime($w->hour, $w->minute, $w->second, $w->month, $w->day, $w->year);
+        $ts = mktime((int) $w->hour, (int) $w->minute, (int) $w->second, (int) $w->month, (int) $w->day, (int) $w->year);
         # get difference
         (int) $diff = ($local_time - $ts);
         $after      = ($diff > 0) ? true : false;
@@ -195,7 +194,7 @@ class CountDownBehaviors
         }
 
         # get times and make a string
-        $times = array_slice($times, 0, $w->number_of_times);
+        $times = array_slice($times, 0, (int) $w->number_of_times);
         if (count($times) > 1) {
             $last = array_pop($times);
             $str  = implode(', ', $times) . ' ' . __('and') . ' ' . $last;
@@ -203,11 +202,11 @@ class CountDownBehaviors
             $str = implode('', $times);
         }
 
-        if (!$w->dynamic) {
+        if (!$w->dynamic || is_null(dcCore::app()->ctx)) {
             $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
-            return $w->renderDiv($w->content_only, 'countdown ' . $w->class, '', $res);
+            return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
         }
 
         # dynamic display with Countdown for jQuery
@@ -220,13 +219,13 @@ class CountDownBehaviors
         $script = '';
 
         if (!defined('COUNTDOWN_SCRIPT')) {
-            $script .= dcUtils::cssLoad(dcCore::app()->blog->getPF(basename(__DIR__) . '/css/jquery.countdown.css')) .
-                dcUtils::jsLoad(dcCore::app()->blog->getPF(basename(__DIR__) . '/js/jquery.plugin.min.js')) .
-                dcUtils::jsLoad(dcCore::app()->blog->getPF(basename(__DIR__) . '/js/jquery.countdown.min.js'));
+            $script .= dcUtils::cssLoad(dcCore::app()->blog->getPF(self::id() . '/css/jquery.countdown.css')) .
+                dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/jquery.plugin.min.js')) .
+                dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/jquery.countdown.min.js'));
 
             $l10n_file = 'jquery.countdown-' . dcCore::app()->blog->settings->get('system')->get('lang') . '.js';
-            if (file_exists(__DIR__ . '/js/' . $l10n_file)) {
-                $script .= dcUtils::jsLoad(dcCore::app()->blog->getPF(basename(__DIR__) . '/js/' . $l10n_file));
+            if (file_exists(__DIR__ . '/../js/' . $l10n_file)) {
+                $script .= dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/' . $l10n_file));
             }
 
             define('COUNTDOWN_SCRIPT', (bool) true);
@@ -240,7 +239,7 @@ class CountDownBehaviors
             $layout = $w->dynamic_layout_before;
         }
 
-        $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') .
+        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
             '<p id="countdown-' . $id . '">' . $text . $str . '</p>' .
             $script .
             '<script type="text/javascript">' . "\n" .
@@ -251,15 +250,15 @@ class CountDownBehaviors
                     $to . ': new Date(' . (int) $w->year . ',' . (int) $w->month . '-1,' .
                     (int) $w->day . ',' . (int) $w->hour . ',' . (int) $w->minute . ',' .
                     (int) $w->second . "),
-						description: '" . html::escapeJS($text) . "',
+						description: '" . Html::escapeJS($text) . "',
 						format: '" . $w->dynamic_format . "',
 						layout: '" . $layout . "',
-						expiryText: '" . html::escapeJS($w->text_after) . "'
+						expiryText: '" . Html::escapeJS($w->text_after) . "'
 					});" .
                 '});' . "\n" .
             '//]]>' .
             '</script>' . "\n";
 
-        return $w->renderDiv($w->content_only, 'countdown ' . $w->class, '', $res);
+        return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
     }
 }
