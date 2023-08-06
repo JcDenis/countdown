@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\countdown;
 
 use dcCore;
-use dcUtils;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsStack;
@@ -23,10 +22,6 @@ use Dotclear\Plugin\widgets\WidgetsElement;
 
 class Widgets
 {
-    public static function id(): string
-    {
-        return basename(dirname(__DIR__));
-    }
     public static function initWidgets(WidgetsStack $w): void
     {
         if (is_null(dcCore::app()->blog)) {
@@ -203,7 +198,7 @@ class Widgets
         }
 
         if (!$w->dynamic || is_null(dcCore::app()->ctx)) {
-            $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') .
+            $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
             return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
@@ -219,13 +214,13 @@ class Widgets
         $script = '';
 
         if (!defined('COUNTDOWN_SCRIPT')) {
-            $script .= dcUtils::cssLoad(dcCore::app()->blog->getPF(self::id() . '/css/jquery.countdown.css')) .
-                dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/jquery.plugin.min.js')) .
-                dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/jquery.countdown.min.js'));
+            $script .= My::cssLoad('jquery.countdown.css') .
+                My::jsLoad('jquery.plugin.min.js') .
+                My::jsLoad('jquery.countdown.min.js');
 
             $l10n_file = 'jquery.countdown-' . dcCore::app()->blog->settings->get('system')->get('lang') . '.js';
             if (file_exists(__DIR__ . '/../js/' . $l10n_file)) {
-                $script .= dcUtils::jsLoad(dcCore::app()->blog->getPF(self::id() . '/js/' . $l10n_file));
+                $script .= My::jsLoad($l10n_file);
             }
 
             define('COUNTDOWN_SCRIPT', (bool) true);
