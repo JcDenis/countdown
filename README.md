@@ -1,11 +1,11 @@
 # README
 
-[![Release](https://img.shields.io/github/v/release/JcDenis/countdown)](https://github.com/JcDenis/countdown/releases)
-[![Date](https://img.shields.io/github/release-date/JcDenis/countdown)](https://github.com/JcDenis/countdown/releases)
-[![Issues](https://img.shields.io/github/issues/JcDenis/countdown)](https://github.com/JcDenis/countdown/issues)
-[![Dotclear](https://img.shields.io/badge/dotclear-v2.22-blue.svg)](https://fr.dotclear.org/download)
+[![Release](https://img.shields.io/github/v/release/JcDenis/countdown)](https://git.dotclear.watch/JcDenis/countdown/releases)
+[![Date](https://img.shields.io/github/release-date/JcDenis/countdown)](https://git.dotclear.watch/JcDenis/countdown/releases)
+[![Issues](https://img.shields.io/github/issues/JcDenis/countdown)](https://git.dotclear.watch/JcDenis/countdown/issues)
+[![Dotclear](https://img.shields.io/badge/dotclear-v2.27-blue.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-green.svg)](https://plugins.dotaddict.org/dc2/details/countdown)
-[![License](https://img.shields.io/github/license/JcDenis/countdown)](https://github.com/JcDenis/countdown/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/JcDenis/countdown)](https://git.dotclear.watch/JcDenis/countdown/blob/master/LICENSE)
 
 ## WHAT IS COUNTDOWN ?
 
@@ -19,7 +19,7 @@ It adds widget showing a countdown since/from a predefined date.
  _countdown_ requires: 
 
   * permissions to manage widgets
-  * Dotclear 2.26
+  * Dotclear 2.27
 
 ## USAGE
 
@@ -32,8 +32,8 @@ It uses jquery for dynamic countdown.
 ## LINKS
 
  * License : [GNU GPL v2](https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)
- * Source & contribution : [GitHub Page](https://github.com/JcDenis/countdown)
- * Packages & details : [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/countdown)
+ * Source & contribution : [Gitea Page](https://git.dotclear.watch/JcDenis/countdown) or [GitHub Page](https://github.com/JcDenis/countdown)
+ * Packages & details : [Gitea Page](https://git.dotclear.watch/JcDenis/countdown/releases) or [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/countdown)
  * Discuss & help : [Dotclear forum](https://forum.dotclear.org/viewforum.php?id=16)
 
 ## CONTRIBUTORS
