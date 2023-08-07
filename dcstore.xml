@@ -5,7 +5,7 @@
     <version>2.3</version>
     <author>Moe (http://gniark.net/) and contributors</author>
     <desc>Countdown and stopwatch</desc>
-    <file>https://gitea.dotclear.watch/JcDenis/countdown/releases/download/v2.3/plugin-countdown.zip</file>
+    <file>https://git.dotclear.watch/JcDenis/countdown/releases/download/v2.3/plugin-countdown.zip</file>
     <da:dcmin>2.27</da:dcmin>
     <da:details>https://git.dotclear.watch/JcDenis/countdown/src/branch/master/README.md</da:details>
     <da:support>https://git.dotclear.watch/JcDenis/countdown/issues</da:support>
