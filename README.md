@@ -1,24 +1,22 @@
 # README
 
-[![Release](https://img.shields.io/badge/release-2.3-a2cbe9.svg)](https://git.dotclear.watch/JcDenis/countdown/releases)
-[![Date](https://img.shields.io/badge/date-2023.08.06-c44d58.svg)](https://git.dotclear.watch/JcDenis/countdown/releases)
-[![Dotclear](https://img.shields.io/badge/dotclear-v2.27-137bbb.svg)](https://fr.dotclear.org/download)
+[![Release](https://img.shields.io/badge/release-2.4-a2cbe9.svg)](https://git.dotclear.watch/JcDenis/countdown/releases)
+![Date](https://img.shields.io/badge/date-2023.10.15-c44d58.svg)
+[![Dotclear](https://img.shields.io/badge/dotclear-v2.28-137bbb.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-9ac123.svg)](https://plugins.dotaddict.org/dc2/details/countdown)
-[![License](https://img.shields.io/github/license/JcDenis/countdown)](https://git.dotclear.watch/JcDenis/countdown/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--2.0-ececec.svg)](https://git.dotclear.watch/JcDenis/countdown/src/branch/master/LICENSE)
 
-## WHAT IS COUNTDOWN ?
+## ABOUT
 
-_countdown_ is a plugin for the open-source 
-web publishing software called Dotclear.
+_countdown_ is a plugin for the open-source web publishing software called [Dotclear](https://www.dotclear.org).
 
-It adds widget showing a countdown since/from a predefined date.
+> Add widget showing a countdown since/from a predefined date.
 
 ## REQUIREMENTS
 
- _countdown_ requires: 
-
-  * permissions to manage widgets
-  * Dotclear 2.27
+* Dotclear 2.28
+* PHP 8.1
+* Dotclear permissions to manage widgets
 
 ## USAGE
 
@@ -30,22 +28,23 @@ It uses jquery for dynamic countdown.
 
 ## LINKS
 
- * License : [GNU GPL v2](https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)
- * Source & contribution : [Gitea Page](https://git.dotclear.watch/JcDenis/countdown) or [GitHub Page](https://github.com/JcDenis/countdown)
- * Packages & details : [Gitea Page](https://git.dotclear.watch/JcDenis/countdown/releases) or [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/countdown)
- * Discuss & help : [Dotclear forum](https://forum.dotclear.org/viewforum.php?id=16)
+* [License](https://git.dotclear.watch/JcDenis/countdown/src/branch/master/LICENSE)
+* [Packages & details](https://git.dotclear.watch/JcDenis/countdown/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/countdown))
+* [Sources & contributions](https://git.dotclear.watch/JcDenis/countdown) (or on [GitHub](https://github.com/JcDenis/countdown))
+* [Issues & security](https://git.dotclear.watch/JcDenis/countdown/issues) (or on [GitHub](https://github.com/JcDenis/countdown/issues))
+* [Discuss & help](https://forum.dotclear.org/viewforum.php?id=16)
 
 ## CONTRIBUTORS
 
- * [Moe](http://gniark.net/) (author)
- * Pierre Van Glabeke
- * Jean-Christian Denis
+* [Moe](http://gniark.net/) (author)
+* Pierre Van Glabeke
+* Jean-Christian Denis (latest)
 
- You are welcome to contribute to this code.
+You are welcome to contribute to this code.
 
- ## JQUERY PLUGIN
+## JQUERY PLUGIN
 
 Dynamic display uses plugin jQuery Countdown; See:
- * [Plugin](http://keith-wood.name/countdown.html)
- * [Formats](http://keith-wood.name/countdownRef.html#format)
- * [Display](http://keith-wood.name/countdownRef.html#layout)
+* [Plugin](http://keith-wood.name/countdown.html)
+* [Formats](http://keith-wood.name/countdownRef.html#format)
+* [Display](http://keith-wood.name/countdownRef.html#layout)

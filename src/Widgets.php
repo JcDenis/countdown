@@ -1,34 +1,32 @@
 <?php
-/**
- * @brief countdown, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Moe (http://gniark.net/) and contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\countdown;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsStack;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
+/**
+ * @brief       countdown widgets class.
+ * @ingroup     countdown
+ *
+ * @author      Moe (author)
+ * @author      Jean-Christian Denis (latest)
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class Widgets
 {
     public static function initWidgets(WidgetsStack $w): void
     {
-        if (is_null(dcCore::app()->blog)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
-        $tz = dcCore::app()->blog->settings->get('system')->get('blog_timezone');
+        $tz = App::blog()->settings()->get('system')->get('blog_timezone');
 
         $array_year   = $array_month = $array_day = $array_hour = [];
         $array_minute = $array_number_of_times = [];
@@ -59,7 +57,7 @@ class Widgets
         $w->create(
             'CountDown',
             __('Countdown'),
-            [self::class, 'parseWidget'],
+            self::parseWidget(...),
             null,
             __('A countdown to a future date or stopwatch to a past date')
         )
@@ -145,15 +143,15 @@ class Widgets
 
     public static function parseWidget(WidgetsElement $w): string
     {
-        if (is_null(dcCore::app()->blog)
+        if (!App::blog()->isDefined()
             || $w->__get('offline')
-            || !$w->checkHomeOnly(dcCore::app()->url->type)
+            || !$w->checkHomeOnly(App::url()->type)
         ) {
             return '';
         }
 
         # get local time
-        $local_time = Date::addTimeZone(dcCore::app()->blog->settings->get('system')->get('blog_timezone'));
+        $local_time = Date::addTimeZone(App::blog()->settings()->get('system')->get('blog_timezone'));
 
         $ts = mktime((int) $w->hour, (int) $w->minute, (int) $w->second, (int) $w->month, (int) $w->day, (int) $w->year);
         # get difference
@@ -197,7 +195,7 @@ class Widgets
             $str = implode('', $times);
         }
 
-        if (!$w->dynamic || is_null(dcCore::app()->ctx)) {
+        if (!$w->dynamic) {
             $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
@@ -205,11 +203,11 @@ class Widgets
         }
 
         # dynamic display with Countdown for jQuery
-        if (!is_numeric(dcCore::app()->ctx->__get('countdown'))) {
-            dcCore::app()->ctx->__set('countdown', 0);
+        if (!is_numeric(App::frontend()->context()->__get('countdown'))) {
+            App::frontend()->context()->__set('countdown', 0);
         }
-        $id = (int) dcCore::app()->ctx->__get('countdown');
-        dcCore::app()->ctx->__set('countdown', $id + 1);
+        $id = (int) App::frontend()->context()->__get('countdown');
+        App::frontend()->context()->__set('countdown', $id + 1);
 
         $script = '';
 
@@ -218,7 +216,7 @@ class Widgets
                 My::jsLoad('jquery.plugin.min.js') .
                 My::jsLoad('jquery.countdown.min.js');
 
-            $l10n_file = 'jquery.countdown-' . dcCore::app()->blog->settings->get('system')->get('lang') . '.js';
+            $l10n_file = 'jquery.countdown-' . App::blog()->settings()->get('system')->get('lang') . '.js';
             if (file_exists(__DIR__ . '/../js/' . $l10n_file)) {
                 $script .= My::jsLoad($l10n_file);
             }
