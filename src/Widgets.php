@@ -35,7 +35,7 @@ class Widgets
         }
         for ($i = 1;$i <= 12;$i++) {
             $i                                                                                                          = str_repeat('0', (2 - strlen((string) $i))) . $i;
-            $array_month[ucfirst(__(Date::strftime('%B', (int) mktime(0, 0, 0, (int) $i, 1, 1970)))) . ' (' . $i . ')'] = $i;
+            $array_month[ucfirst(__(Date::dt2str('%B', (string) mktime(0, 0, 0, (int) $i, 1, 1970)))) . ' (' . $i . ')'] = $i;
         }
         for ($i = 1;$i <= 31;$i++) {
             $i             = str_repeat('0', (2 - strlen((string) $i))) . $i;
@@ -221,7 +221,7 @@ class Widgets
                 $script .= My::jsLoad($l10n_file);
             }
 
-            define('COUNTDOWN_SCRIPT', (bool) true);
+            define('COUNTDOWN_SCRIPT', true);
         }
 
         if ($after) {
