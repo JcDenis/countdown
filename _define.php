@@ -18,7 +18,7 @@ $this->registerModule(
     'CountDown',
     'Countdown and stopwatch',
     'Moe (http://gniark.net/) and contributors',
-    '2.4.1',
+    '2.4.2',
     [
         'requires'    => [['core', '2.28']],
         'permissions' => 'My',
