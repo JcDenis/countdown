@@ -4,7 +4,7 @@
 ![Date](https://img.shields.io/github/release-date/jcdenis/countdown?color=red)
 [![Dotclear](https://img.shields.io/badge/dotclear-v2.33-137bbb.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-9ac123.svg)](https://plugins.dotaddict.org/dc2/details/countdown)
-[![License](https://img.shields.io/github/license/jcdenis/countdown?color=white)](https://github.com/JcDenis/countdown/src/branch/master/LICENSE)
+[![License](https://img.shields.io/github/license/jcdenis/countdown?color=white)](https://github.com/JcDenis/countdown/blob/master/LICENSE)
 
 ## ABOUT
 
@@ -28,7 +28,7 @@ It uses jquery for dynamic countdown.
 
 ## LINKS
 
-* [License](https://github.com/JcDenis/countdown/src/branch/master/LICENSE)
+* [License](https://github.com/JcDenis/countdown/blob/master/LICENSE)
 * [Packages & details](https://github.com/JcDenis/countdown/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/countdown))
 * [Sources & contributions](https://github.com/JcDenis/countdown)
 * [Issues & security](https://github.com/JcDenis/countdown/issues)
