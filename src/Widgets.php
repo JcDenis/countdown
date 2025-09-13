@@ -144,7 +144,7 @@ class Widgets
     public static function parseWidget(WidgetsElement $w): string
     {
         if (!App::blog()->isDefined()
-            || $w->__get('offline')
+            || $w->get('offline')
             || !$w->checkHomeOnly(App::url()->type)
         ) {
             return '';
@@ -153,7 +153,14 @@ class Widgets
         # get local time
         $local_time = Date::addTimeZone(App::blog()->settings()->get('system')->get('blog_timezone'));
 
-        $ts = mktime((int) $w->hour, (int) $w->minute, (int) $w->second, (int) $w->month, (int) $w->day, (int) $w->year);
+        $ts = mktime(
+            (int) $w->get('hour'),
+            (int) $w->get('minute'),
+            (int) $w->get('second'),
+            (int) $w->get('month'),
+            (int) $w->get('day'),
+            (int) $w->get('year')
+        );
         # get difference
         (int) $diff = ($local_time - $ts);
         $after      = ($diff > 0) ? true : false;
@@ -173,7 +180,7 @@ class Widgets
         foreach ($intervals as $k => $v) {
             if ($diff >= $k) {
                 $time    = floor($diff / $k);
-                $times[] = (($w->zeros and $v['zeros'])
+                $times[] = (($w->get('zeros') and $v['zeros'])
                     ? sprintf('%02d', $time) : $time) . ' ' . (($time <= 1) ? $v['one']
                     : $v['more']);
                 $diff = $diff % $k;
@@ -181,13 +188,13 @@ class Widgets
         }
 
         # output
-        $text = ($after) ? $w->text_after : $w->text_before;
+        $text = ($after) ? $w->get('text_after') : $w->get('text_before');
         if (strlen($text) > 0) {
             $text .= ' ';
         }
 
         # get times and make a string
-        $times = array_slice($times, 0, (int) $w->number_of_times);
+        $times = array_slice($times, 0, (int) $w->get('number_of_times'));
         if (count($times) > 1) {
             $last = array_pop($times);
             $str  = implode(', ', $times) . ' ' . __('and') . ' ' . $last;
@@ -195,7 +202,7 @@ class Widgets
             $str = implode('', $times);
         }
 
-        if (!$w->dynamic) {
+        if (!$w->get('dynamic')) {
             $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
@@ -226,10 +233,10 @@ class Widgets
 
         if ($after) {
             $to     = 'since';
-            $layout = $w->dynamic_layout_after;
+            $layout = $w->get('dynamic_layout_after');
         } else {
             $to     = 'until';
-            $layout = $w->dynamic_layout_before;
+            $layout = $w->get('dynamic_layout_before');
         }
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
@@ -240,13 +247,13 @@ class Widgets
                 '$().ready(function() {' .
                 "$('#countdown-" . $id . "').countdown({" .
                     # In Javascript, 0 = January, 11 = December
-                    $to . ': new Date(' . (int) $w->year . ',' . (int) $w->month . '-1,' .
-                    (int) $w->day . ',' . (int) $w->hour . ',' . (int) $w->minute . ',' .
-                    (int) $w->second . "),
+                    $to . ': new Date(' . (int) $w->get('year') . ',' . (int) $w->get('month') . '-1,' .
+                    (int) $w->get('day') . ',' . (int) $w->get('hour') . ',' . (int) $w->get('minute') . ',' .
+                    (int) $w->get('second') . "),
 						description: '" . Html::escapeJS($text) . "',
-						format: '" . $w->dynamic_format . "',
+						format: '" . $w->get('dynamic_format') . "',
 						layout: '" . $layout . "',
-						expiryText: '" . Html::escapeJS($w->text_after) . "'
+						expiryText: '" . Html::escapeJS($w->get('text_after')) . "'
 					});" .
                 '});' . "\n" .
             '//]]>' .
