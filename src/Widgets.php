@@ -26,7 +26,7 @@ class Widgets
             return;
         }
 
-        $tz = App::blog()->settings()->get('system')->get('blog_timezone');
+        $tz = App::blog()->settings()->get('system')->getStr('blog_timezone', false);
 
         $array_year   = $array_month = $array_day = $array_hour = [];
         $array_minute = $array_number_of_times = [];
@@ -145,22 +145,22 @@ class Widgets
     {
         if (!App::blog()->isDefined()
             || $w->get('offline')
-            || !$w->checkHomeOnly(App::url()->type)
+            || !$w->checkHomeOnly(App::url()->getType())
         ) {
             return '';
         }
 
         # get local time
-        $local_time = Date::addTimeZone(App::blog()->settings()->get('system')->get('blog_timezone'));
+        $local_time = Date::addTimeZone(App::blog()->settings()->get('system')->getStr('blog_timezone', false));
 
-        $ts = mktime(
-            (int) $w->get('hour'),
-            (int) $w->get('minute'),
-            (int) $w->get('second'),
-            (int) $w->get('month'),
-            (int) $w->get('day'),
-            (int) $w->get('year')
-        );
+        $_hour   = is_numeric($w->get('hour')) ? (int) $w->get('hour') : 0;
+        $_minute = is_numeric($w->get('minute')) ? (int) $w->get('minute') : 0;
+        $_second = is_numeric($w->get('second')) ? (int) $w->get('second') : 0;
+        $_month  = is_numeric($w->get('month')) ? (int) $w->get('month') : 0;
+        $_day    = is_numeric($w->get('day')) ? (int) $w->get('day') : 0;
+        $_year   = is_numeric($w->get('year')) ? (int) $w->get('year') : 0;
+
+        $ts = mktime($_hour, $_minute, $_second, $_month, $_day, $_year);
         # get difference
         (int) $diff = ($local_time - $ts);
         $after      = ($diff > 0) ? true : false;
@@ -169,17 +169,17 @@ class Widgets
         $times = [];
 
         $intervals = [
-            (3600 * 24 * 365.24) => ['one' => __('year'), 'more' => __('years'), 'zeros' => false],
-            (3600 * 24 * 30.4)   => ['one' => __('month'), 'more' => __('months'), 'zeros' => false],
-            (3600 * 24)          => ['one' => __('day'), 'more' => __('days'), 'zeros' => false],
-            (3600)               => ['one' => __('hour'), 'more' => __('hours'), 'zeros' => true],
-            (60)                 => ['one' => __('minute'), 'more' => __('minutes'), 'zeros' => true],
-            (1)                  => ['one' => __('second'), 'more' => __('seconds'), 'zeros' => true],
+            (int) (3600 * 24 * 365.24) => ['one' => __('year'), 'more' => __('years'), 'zeros' => false],
+            (int) (3600 * 24 * 30.4)   => ['one' => __('month'), 'more' => __('months'), 'zeros' => false],
+            (int) (3600 * 24)          => ['one' => __('day'), 'more' => __('days'), 'zeros' => false],
+            (int) (3600)               => ['one' => __('hour'), 'more' => __('hours'), 'zeros' => true],
+            (int) (60)                 => ['one' => __('minute'), 'more' => __('minutes'), 'zeros' => true],
+            (int) (1)                  => ['one' => __('second'), 'more' => __('seconds'), 'zeros' => true],
         ];
 
         foreach ($intervals as $k => $v) {
             if ($diff >= $k) {
-                $time    = floor($diff / $k);
+                $time    = (int) floor($diff / $k);
                 $times[] = (($w->get('zeros') and $v['zeros'])
                     ? sprintf('%02d', $time) : $time) . ' ' . (($time <= 1) ? $v['one']
                     : $v['more']);
@@ -189,12 +189,14 @@ class Widgets
 
         # output
         $text = ($after) ? $w->get('text_after') : $w->get('text_before');
+        $text = is_string($text) ? $text : '';
         if (strlen($text) > 0) {
             $text .= ' ';
         }
 
         # get times and make a string
-        $times = array_slice($times, 0, (int) $w->get('number_of_times'));
+        $nbt = is_numeric($w->get('number_of_times')) ? (int) $w->get('number_of_times') : 0;
+        $times = array_slice($times, 0, $nbt);
         if (count($times) > 1) {
             $last = array_pop($times);
             $str  = implode(', ', $times) . ' ' . __('and') . ' ' . $last;
@@ -203,7 +205,7 @@ class Widgets
         }
 
         if (!$w->get('dynamic')) {
-            $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
+            $res = (is_string($w->get('title')) && !empty($w->get('title')) ? $w->renderTitle(Html::escapeHTML($w->get('title'))) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
             return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
@@ -213,7 +215,8 @@ class Widgets
         if (!is_numeric(App::frontend()->context()->__get('countdown'))) {
             App::frontend()->context()->__set('countdown', 0);
         }
-        $id = (int) App::frontend()->context()->__get('countdown');
+        $id = App::frontend()->context()->__get('countdown');
+        $id = is_numeric($id) ? $id : 0;
         App::frontend()->context()->__set('countdown', $id + 1);
 
         $script = '';
@@ -223,7 +226,7 @@ class Widgets
                 My::jsLoad('jquery.plugin.min.js') .
                 My::jsLoad('jquery.countdown.min.js');
 
-            $l10n_file = 'jquery.countdown-' . App::blog()->settings()->get('system')->get('lang') . '.js';
+            $l10n_file = 'jquery.countdown-' . App::blog()->settings()->get('system')->getStr('lang', false) . '.js';
             if (file_exists(__DIR__ . '/../js/' . $l10n_file)) {
                 $script .= My::jsLoad($l10n_file);
             }
@@ -239,7 +242,7 @@ class Widgets
             $layout = $w->get('dynamic_layout_before');
         }
 
-        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') .
+        $res = (is_string($w->get('title')) && !empty($w->get('title')) ? $w->renderTitle(Html::escapeHTML($w->get('title'))) : '') .
             '<p id="countdown-' . $id . '">' . $text . $str . '</p>' .
             $script .
             '<script type="text/javascript">' . "\n" .
@@ -247,18 +250,16 @@ class Widgets
                 '$().ready(function() {' .
                 "$('#countdown-" . $id . "').countdown({" .
                     # In Javascript, 0 = January, 11 = December
-                    $to . ': new Date(' . (int) $w->get('year') . ',' . (int) $w->get('month') . '-1,' .
-                    (int) $w->get('day') . ',' . (int) $w->get('hour') . ',' . (int) $w->get('minute') . ',' .
-                    (int) $w->get('second') . "),
+                    $to . ': new Date(' . $_year . ',' . $_month . '-1,' . $_day . ',' . $_hour . ',' . $_minute . ',' . $_second . "),
 						description: '" . Html::escapeJS($text) . "',
-						format: '" . $w->get('dynamic_format') . "',
-						layout: '" . $layout . "',
-						expiryText: '" . Html::escapeJS($w->get('text_after')) . "'
+						format: '" . (is_string($w->get('dynamic_format')) ? $w->get('dynamic_format') : '') . "',
+						layout: '" . (is_string($layout) ? $layout : '') . "',
+						expiryText: '" . Html::escapeJS(is_string($w->get('text_after')) ? $w->get('text_after') : '') . "'
 					});" .
                 '});' . "\n" .
             '//]]>' .
             '</script>' . "\n";
 
-        return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
+        return $w->renderDiv((bool) $w->get('content_only'), 'countdown' . (is_string($w->get('class')) ? ' ' . $w->get('class') : ''), '', $res);
     }
 }
