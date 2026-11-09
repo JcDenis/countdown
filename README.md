@@ -48,3 +48,4 @@ Dynamic display uses plugin jQuery Countdown; See:
 * [Plugin](http://keith-wood.name/countdown.html)
 * [Formats](http://keith-wood.name/countdownRef.html#format)
 * [Display](http://keith-wood.name/countdownRef.html#layout)
+* Claude (AI assistant by Anthropic)

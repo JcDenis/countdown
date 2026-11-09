@@ -208,7 +208,7 @@ class Widgets
             $res = (is_string($w->get('title')) && !empty($w->get('title')) ? $w->renderTitle(Html::escapeHTML($w->get('title'))) : '') .
             '<p>' . $text . '<span>' . $str . '</span></p>';
 
-            return $w->renderDiv((bool) $w->content_only, 'countdown ' . $w->class, '', $res);
+            return $w->renderDiv((bool) $w->get('content_only'), 'countdown ' . (is_string($w->get('class')) ? $w->get('class') : ''), '', $res);
         }
 
         # dynamic display with Countdown for jQuery
