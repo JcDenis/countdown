@@ -12,6 +12,8 @@ _countdown_ is a plugin for the open-source web publishing software called [Dotc
 
 > Add widget showing a countdown since/from a predefined date.
 
+A [user guide in French](https://github.com/JcDenis/countdown/blob/master/docs/fr/utilisation.md) is available.
+
 ## REQUIREMENTS
 
 * Dotclear 2.39
@@ -28,6 +30,7 @@ It uses jquery for dynamic countdown.
 
 ## LINKS
 
+* [User guide (in French)](https://github.com/JcDenis/countdown/blob/master/docs/fr/utilisation.md)
 * [License](https://github.com/JcDenis/countdown/blob/master/LICENSE)
 * [Packages & details](https://github.com/JcDenis/countdown/releases) (or on [Repository](https://dotclear.org/plugin/detail/countdown))
 * [Sources & contributions](https://github.com/JcDenis/countdown)
