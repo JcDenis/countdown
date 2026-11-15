@@ -86,7 +86,7 @@ msgstr "Mise en page de l'affichage dynamique si la date est dans le futur (voir
 
 #: _widget.php:115
 msgid "In {y<}{yn} {yl}, {y>} {o<}{on} {ol}, {o>} {w<}{wn} {wl}, {w>} {d<}{dn} {dl}, {d>} {hn} {hl}, {mn} {ml} and {sn} {sl}"
-msgstr "Dans {y<}{yn} {yl}, {y>}{o<}{on} {ol}, {o>}{d<}{dn} {dl}, {d>}{hn} {hl}, {mn} {ml} et {sn} {sl}"
+msgstr "Dans {y<}{yn} {yl}, {y>} {o<}{on} {ol}, {o>} {w<}{wn} {wl}, {w>} {d<}{dn} {dl}, {d>} {hn} {hl}, {mn} {ml} et {sn} {sl}"
 
 #: _widget.php:119
 msgid "Dynamic display layout if the date is in the past (see <a href="%1$s" %2$s>jQuery Countdown Reference</a>):"
