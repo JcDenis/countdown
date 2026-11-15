@@ -77,10 +77,7 @@ Les champs _Nombre de valeurs_ et _zéros_ ne servent pas à l'affichage dynamiq
 
 ## Bon à savoir
 
-* Quand vous rouvrez les réglages, la liste _An_ affiche toujours 1902 et _Nombre de valeurs à afficher_ affiche 1, même si une autre valeur est enregistrée. Si vous enregistrez sans les corriger, ces valeurs sont remplacées. Resélectionnez-les à chaque modification.
-* Les noms des mois dans la liste _Mois_ sont tous « Novembre ». Seul le numéro entre parenthèses est exact.
-* Les listes _Minute_ et _Seconde_ vont jusqu'à 60. Choisir 60 ajoute une heure ou une minute.
-* Une date impossible (30 février) est acceptée et décalée au jour suivant.
-* Les mois et les années de l'affichage fixe sont comptés avec des durées moyennes (30,4 jours pour un mois). Le résultat peut différer d'un jour d'un calcul au calendrier.
-* L'affichage dynamique utilise l'heure de l'ordinateur du visiteur, l'affichage fixe celle du blog.
-* Le widget s'appelle « Chronomètre » dans la liste, et son titre par défaut est « CountDown ».
+* Une date impossible (31 avril, 30 février) est ramenée au dernier jour du mois.
+* Les mois et les années sont comptés au calendrier, avec leur vraie durée.
+* L'affichage dynamique vise le même instant que l'affichage fixe, dans le fuseau horaire du blog, quel que soit le fuseau du visiteur. Le compteur avance ensuite avec l'horloge de son ordinateur.
+* Le widget s'appelle « Chronomètre » dans la liste, et c'est aussi son titre par défaut.
