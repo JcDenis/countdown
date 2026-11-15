@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\countdown;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use Dotclear\App;
+use Exception;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsStack;
@@ -28,14 +31,15 @@ class Widgets
 
         $tz = App::blog()->settings()->get('system')->getStr('blog_timezone', false);
 
-        $array_year   = $array_month = $array_day = $array_hour = [];
-        $array_minute = $array_number_of_times = [];
+        $array_year  = $array_number_of_times = [];
+        $array_month = $array_day = $array_hour = $array_minute = [];
+        // Combo values are strings, as saved settings, to be selected
         for ($i = 1902;$i <= 2037;$i++) {
-            $array_year[$i] = $i;
+            $array_year[(string) $i] = (string) $i;
         }
         for ($i = 1;$i <= 12;$i++) {
-            $i                                                                                                          = str_repeat('0', (2 - strlen((string) $i))) . $i;
-            $array_month[ucfirst(__(Date::dt2str('%B', (string) mktime(0, 0, 0, (int) $i, 1, 1970)))) . ' (' . $i . ')'] = $i;
+            $m                                                                                = sprintf('%02d', $i);
+            $array_month[ucfirst(Date::str('%B', (int) mktime(0, 0, 0, $i, 1, 2000))) . ' (' . $m . ')'] = $m;
         }
         for ($i = 1;$i <= 31;$i++) {
             $i             = str_repeat('0', (2 - strlen((string) $i))) . $i;
@@ -45,14 +49,14 @@ class Widgets
             $i              = str_repeat('0', (2 - strlen((string) $i))) . $i;
             $array_hour[$i] = $i;
         }
-        for ($i = 0;$i <= 60;$i++) {
+        for ($i = 0;$i <= 59;$i++) {
             $i                = str_repeat('0', (2 - strlen((string) $i))) . $i;
             $array_minute[$i] = $i;
         }
         for ($i = 1;$i <= 5;$i++) {
-            $array_number_of_times[$i] = $i;
+            $array_number_of_times[(string) $i] = (string) $i;
         }
-        $array_number_of_times['6 (' . __('all') . ')'] = 6;
+        $array_number_of_times['6 (' . __('all') . ')'] = '6';
 
         $w->create(
             'CountDown',
@@ -61,7 +65,7 @@ class Widgets
             null,
             __('A countdown to a future date or stopwatch to a past date')
         )
-        ->addTitle(__('CountDown'))
+        ->addTitle(__('Countdown'))
         ->setting(
             'text_before',
             __('Text displayed if the date is in the future:'),
@@ -75,7 +79,7 @@ class Widgets
             'text'
         )
 
-        ->setting('year', ucfirst(__('year')) . ':', Date::str('%Y', null, $tz), 'combo', $array_year)
+        ->setting('year', ucfirst(__('year')) . ':', Date::str('%Y', null, $tz), 'combo', self::combo($array_year))
         ->setting('month', ucfirst(__('month')) . ':', Date::str('%m', null, $tz), 'combo', $array_month)
         ->setting('day', ucfirst(__('day')) . ':', Date::str('%d', null, $tz), 'combo', $array_day)
         ->setting('hour', ucfirst(__('hour')) . ':', Date::str('%H', null, $tz), 'combo', $array_hour)
@@ -87,7 +91,7 @@ class Widgets
             __('Number of values to be displayed:'),
             '6',
             'combo',
-            $array_number_of_times
+            self::combo($array_number_of_times)
         )
         ->setting(
             'zeros',
@@ -150,40 +154,42 @@ class Widgets
             return '';
         }
 
-        # get local time
-        $local_time = Date::addTimeZone(App::blog()->settings()->get('system')->getStr('blog_timezone', false));
+        // Target date in blog time zone, an invalid day is set to the last day of the month
+        try {
+            $tz = new DateTimeZone(App::blog()->settings()->get('system')->getStr('blog_timezone', false) ?: 'UTC');
+        } catch (Exception) {
+            $tz = new DateTimeZone('UTC');
+        }
 
-        $_hour   = is_numeric($w->get('hour')) ? (int) $w->get('hour') : 0;
-        $_minute = is_numeric($w->get('minute')) ? (int) $w->get('minute') : 0;
-        $_second = is_numeric($w->get('second')) ? (int) $w->get('second') : 0;
-        $_month  = is_numeric($w->get('month')) ? (int) $w->get('month') : 0;
-        $_day    = is_numeric($w->get('day')) ? (int) $w->get('day') : 0;
-        $_year   = is_numeric($w->get('year')) ? (int) $w->get('year') : 0;
+        $_hour   = is_numeric($w->get('hour')) ? min(23, max(0, (int) $w->get('hour'))) : 0;
+        $_minute = is_numeric($w->get('minute')) ? min(59, max(0, (int) $w->get('minute'))) : 0;
+        $_second = is_numeric($w->get('second')) ? min(59, max(0, (int) $w->get('second'))) : 0;
+        $_month  = is_numeric($w->get('month')) ? min(12, max(1, (int) $w->get('month'))) : 1;
+        $_year   = is_numeric($w->get('year')) ? (int) $w->get('year') : (int) date('Y');
+        $_day    = is_numeric($w->get('day')) ? max(1, (int) $w->get('day')) : 1;
+        $_day    = min($_day, (int) (new DateTimeImmutable('now', $tz))->setDate($_year, $_month, 1)->format('t'));
 
-        $ts = mktime($_hour, $_minute, $_second, $_month, $_day, $_year);
-        # get difference
-        (int) $diff = ($local_time - $ts);
-        $after      = ($diff > 0) ? true : false;
-        $diff       = abs($diff);
+        $now    = new DateTimeImmutable('now', $tz);
+        $target = (new DateTimeImmutable('now', $tz))->setDate($_year, $_month, $_day)->setTime($_hour, $_minute, $_second);
+        $after  = $now > $target;
 
-        $times = [];
-
-        $intervals = [
-            (int) (3600 * 24 * 365.24) => ['one' => __('year'), 'more' => __('years'), 'zeros' => false],
-            (int) (3600 * 24 * 30.4)   => ['one' => __('month'), 'more' => __('months'), 'zeros' => false],
-            (int) (3600 * 24)          => ['one' => __('day'), 'more' => __('days'), 'zeros' => false],
-            (int) (3600)               => ['one' => __('hour'), 'more' => __('hours'), 'zeros' => true],
-            (int) (60)                 => ['one' => __('minute'), 'more' => __('minutes'), 'zeros' => true],
-            (int) (1)                  => ['one' => __('second'), 'more' => __('seconds'), 'zeros' => true],
+        // Calendar difference, months and years have their real length
+        $interval = $now->diff($target);
+        $values   = [
+            [$interval->y, __('year'), __('years'), false],
+            [$interval->m, __('month'), __('months'), false],
+            [$interval->d, __('day'), __('days'), false],
+            [$interval->h, __('hour'), __('hours'), true],
+            [$interval->i, __('minute'), __('minutes'), true],
+            [$interval->s, __('second'), __('seconds'), true],
         ];
 
-        foreach ($intervals as $k => $v) {
-            if ($diff >= $k) {
-                $time    = (int) floor($diff / $k);
-                $times[] = (($w->get('zeros') and $v['zeros'])
-                    ? sprintf('%02d', $time) : $time) . ' ' . (($time <= 1) ? $v['one']
-                    : $v['more']);
-                $diff = $diff % $k;
+        $times   = [];
+        $started = false;
+        foreach ($values as [$time, $one, $more, $zeros]) {
+            if ($time > 0 || $started) {
+                $started = true;
+                $times[] = (($w->get('zeros') && $zeros) ? sprintf('%02d', $time) : $time) . ' ' . (($time <= 1) ? $one : $more);
             }
         }
 
@@ -249,8 +255,8 @@ class Widgets
             '//<![CDATA[' . "\n" .
                 '$().ready(function() {' .
                 "$('#countdown-" . $id . "').countdown({" .
-                    # In Javascript, 0 = January, 11 = December
-                    $to . ': new Date(' . $_year . ',' . $_month . '-1,' . $_day . ',' . $_hour . ',' . $_minute . ',' . $_second . "),
+                    # Same instant for all visitors, whatever their time zone
+                    $to . ': new Date(' . ($target->getTimestamp() * 1000) . "),
 						description: '" . Html::escapeJS($text) . "',
 						format: '" . (is_string($w->get('dynamic_format')) ? $w->get('dynamic_format') : '') . "',
 						layout: '" . (is_string($layout) ? $layout : '') . "',
@@ -261,5 +267,24 @@ class Widgets
             '</script>' . "\n";
 
         return $w->renderDiv((bool) $w->get('content_only'), 'countdown' . (is_string($w->get('class')) ? ' ' . $w->get('class') : ''), '', $res);
+    }
+
+    /**
+     * Get combo options.
+     *
+     * Numeric labels become integer keys in PHP, Dotclear only uses them as labels.
+     *
+     * @param   array<int|string, string>   $options    The options
+     *
+     * @return  array<string, mixed>
+     */
+    private static function combo(array $options): array
+    {
+        $res = [];
+        foreach ($options as $label => $value) {
+            $res[(string) $label] = $value;
+        }
+
+        return $res;
     }
 }
