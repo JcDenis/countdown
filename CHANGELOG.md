@@ -1,3 +1,9 @@
+countdown 2.8 - 2026.11.15
+===========================================================
+* [fix] Widget: saved values selected, months names, dates limits, real calendar difference, same time zone for dynamic display
+* [lang] Weeks in French dynamic layout
+* [docs] Add a user guide in French, with screenshots
+
 countdown 2.7 - 2026.11.09
 ===========================================================
 * Fix compatibility with Dotclear 2.40
